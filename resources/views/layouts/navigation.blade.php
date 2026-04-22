@@ -11,11 +11,14 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                </div>
+            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+            <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            {{ __('Dashboard') }}
+            </x-nav-link>
+    
+            <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
+                {{ __('Cart') }} ({{ session('cart') ? count(session('cart')) : 0 }})
+            </x-nav-link>
             </div>
 
             <!-- Settings Dropdown -->

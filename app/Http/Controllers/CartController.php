@@ -7,6 +7,16 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+
+
+        /**
+ * Display the items currently in the session cart.
+ */
+    public function index()
+{
+    $cart = session()->get('cart', []);
+    return view('cart.index', compact('cart'));
+}
     /**
      * Add an item to the session-based cart.
      * Future edit: Add validation to check if stock is available.
