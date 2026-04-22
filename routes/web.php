@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth; // Added for the /orders route
 | This is where you register web routes for your CommercialSystemApplication.
 */
 
+
 // Home Route (Optional: redirect to dashboard or a welcome page)
 Route::get('/', function () {
     return view('welcome');
@@ -41,6 +42,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+
 
 // Auth routes (Login, Register, etc.)
 require __DIR__.'/auth.php';
