@@ -13,15 +13,25 @@ class ProductController extends Controller
      */
     public function index(Request $request)
 {
-    $query = Product::query();
+    // 1. Your original list of products
+    $allProducts = [
+        ['id' => 1, 'name' => 'Classic Watch', 'price' => 150.00, 'description' => 'A timeless piece for your wrist.'],
+        ['id' => 2, 'name' => 'Wireless Earbuds', 'price' => 89.99, 'description' => 'High-quality sound without the wires.'],
+        ['id' => 3, 'name' => 'Smart Coffee Mug', 'price' => 30.00, 'description' => 'Keeps your drink at the perfect temperature.'],
+        ['id' => 4, 'name' => 'Leather Wallet', 'price' => 45.50, 'description' => 'Genuine leather with RFID protection.'],
+    ];
 
-    // Future edit: Add category filtering here
-    if ($request->has('search')) {
-        $query->where('name', 'like', '%' . $request->search . '%')
-              ->orWhere('description', 'like', '%' . $request->search . '%');
+    $search = $request->input('search');
+
+    // 2. If there is a search term, filter the array
+    if ($search) {
+        $products = array_filter($allProducts, function ($product) use ($search) {
+            return str_contains(strtolower($product['name']), strtolower($search)) || 
+                   str_contains(strtolower($product['description']), strtolower($search));
+        });
+    } else {
+        $products = $allProducts;
     }
-
-    $products = $query->get();
 
     return view('dashboard', compact('products'));
 }

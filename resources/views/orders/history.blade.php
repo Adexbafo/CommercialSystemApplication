@@ -41,7 +41,9 @@
                                     </span>
                                     <div class="text-lg">
                                         <span class="text-gray-500 text-sm mr-1">Total Paid:</span>
-                                        <span class="font-bold text-blue-600">${{ number_format($order->total_amount, 2) }}</span>
+                                        <span class="font-bold text-blue-600">${{ number_format($order->total_amount, 2) }}</span><a href="{{ route('orders.download', $order->id) }}" class="text-blue-600 hover:underline text-sm font-bold">
+                                         Download Receipt (PDF)
+                                    </a>
                                     </div>
                                 </div>
                             </div>
