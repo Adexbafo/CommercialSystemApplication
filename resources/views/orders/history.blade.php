@@ -25,10 +25,13 @@
 
                                 <div class="space-y-2">
                                     @foreach($order->items as $id => $details)
-                                        <div class="flex justify-between items-center text-sm">
-                                            <span>{{ $details['name'] }} <span class="text-gray-400">x{{ $details['quantity'] }}</span></span>
-                                            <span class="font-semibold">${{ number_format($details['price'] * $details['quantity'], 2) }}</span>
-                                        </div>
+                                        <div class="flex justify-between items-center text-sm py-1 border-b border-gray-50 last:border-0">
+                                <span class="text-gray-700">
+                                    {{ $details['name'] }} 
+                                <span class="ml-2 text-xs font-bold text-gray-400">x{{ $details['quantity'] }}</span>
+                                </span>
+                                <span class="font-mono text-gray-900">${{ number_format($details['price'] * $details['quantity'], 2) }}</span>
+                                </div>
                                     @endforeach
                                 </div>
 

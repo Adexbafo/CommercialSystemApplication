@@ -25,12 +25,14 @@
                             </div>
                         @endforeach
                         
-                        <div class="text-right mt-6">
-                            <h3 class="text-xl font-bold">Total: ${{ array_sum(array_column(session('cart'), 'price')) }}</h3>
-                            <x-primary-button class="mt-4 w-full sm:w-auto">
-                                Proceed to Checkout
-                            </x-primary-button>
-                        </div>
+                        <div class="mt-8">
+                <form action="{{ route('checkout.store') }}" method="POST">
+                @csrf
+                  <button type="submit" class="w-full bg-blue-600 text-white font-bold py-4 rounded-lg hover:bg-blue-700 transition shadow-lg">
+                    Proceed to Checkout
+                  </button>
+                </form>
+                    </div>
                     </div>
                 @else
                     <p class="text-center text-gray-500">Your cart is empty.</p>
