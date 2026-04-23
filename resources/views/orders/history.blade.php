@@ -39,12 +39,15 @@
                                     <span class="px-3 py-1 bg-green-100 text-green-700 text-xs rounded-full font-bold uppercase">
                                         {{ $order->status }}
                                     </span>
-                                    <div class="text-lg">
-                                        <span class="text-gray-500 text-sm mr-1">Total Paid:</span>
-                                        <span class="font-bold text-blue-600">${{ number_format($order->total_amount, 2) }}</span><a href="{{ route('orders.download', $order->id) }}" class="text-blue-600 hover:underline text-sm font-bold">
-                                         Download Receipt (PDF)
-                                    </a>
-                                    </div>
+                                    <div class="mt-4 flex justify-end">
+                            <a href="{{ route('orders.download', $order->id) }}" 
+                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none transition ease-in-out duration-150">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="Status7 10l5 5 5-5M12 4v12" />
+                            </svg>
+                         Download Receipt (PDF)
+                            </a>
+                                </div>
                                 </div>
                             </div>
                         @endforeach

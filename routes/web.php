@@ -8,6 +8,13 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
+
+
+
+Route::get('/admin/products', [ProductController::class, 'adminIndex'])
+    ->middleware(['auth', 'can:admin'])
+    ->name('admin.products');
+
 Route::get('/', function () {
     return view('welcome');
 });

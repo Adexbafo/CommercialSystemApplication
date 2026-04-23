@@ -9,14 +9,15 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+   public function up(): void
 {
     Schema::create('products', function (Blueprint $table) {
         $table->id();
         $table->string('name');
-        $table->text('description');
-        $table->decimal('price', 8, 2); // For those mock prices
-        $table->string('image_url')->nullable();
+        $table->text('description')->nullable();
+        $table->decimal('price', 10, 2);
+        $table->integer('quantity')->default(10); // ADD THIS LINE
+        $table->string('image')->nullable();
         $table->timestamps();
     });
 }
