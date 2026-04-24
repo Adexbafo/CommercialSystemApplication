@@ -37,32 +37,49 @@
 
 
 
-       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
     @foreach($products as $product)
-        <div class="bg-white shadow-sm sm:rounded-lg p-6 border border-gray-200 flex flex-col justify-between">
-            <div>
-                <h3 class="font-bold text-lg text-gray-900">{{ $product->name }}</h3>
-                <p class="text-gray-600 text-sm mt-2">{{ $product->description }}</p>
-                <p class="mt-4 font-semibold text-blue-600 text-xl">${{ number_format($product->price, 2) }}</p>
+        <div class="bg-white overflow-hidden shadow-md rounded-lg border border-gray-100 flex flex-col">
+            
+            <div class="h-48 w-full bg-gray-200">
+                @if($product->image)
+                    <img src="{{ asset('storage/' . $product->image) }}" 
+                         alt="{{ $product->name }}" 
+                         class="w-full h-full object-cover">
+                @else
+                    <div class="w-full h-full flex items-center justify-center text-gray-400 italic bg-gray-50">
+                        <span>No image available</span>
+                    </div>
+                @endif
             </div>
 
-            <div class="mt-6">
-                <p class="text-xs mb-2 {{ $product->quantity > 0 ? 'text-green-600' : 'text-red-600' }}">
-                    ● {{ $product->quantity > 0 ? $product->quantity . ' in stock' : 'Out of Stock' }}
+            <div class="p-5 flex-grow flex flex-col">
+                <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $product->name }}</h3>
+                <p class="text-gray-600 text-sm line-clamp-2 mb-4">
+                    {{ $product->description }}
                 </p>
+                
+                <div class="mt-auto">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-2xl font-bold text-blue-600">${{ number_format($product->price, 2) }}</span>
+                        <span class="text-xs font-medium {{ $product->quantity > 0 ? 'text-green-600' : 'text-red-600' }}">
+                            ● {{ $product->quantity > 0 ? $product->quantity . ' in stock' : 'Out of Stock' }}
+                        </span>
+                    </div>
 
-                @if($product->quantity > 0)
-                    <form action="{{ route('cart.add', $product->id) }}" method="POST">
-                        @csrf
-                        <x-primary-button class="w-full justify-center">
-                            Add to Cart
-                        </x-primary-button>
-                    </form>
-                @else
-                    <button disabled class="w-full bg-gray-200 text-gray-500 py-2 rounded-md cursor-not-allowed">
-                        Sold Out
-                    </button>
-                @endif
+                    @if($product->quantity > 0)
+                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                            @csrf
+                            <x-primary-button class="w-full justify-center py-3">
+                                Add to Cart
+                            </x-primary-button>
+                        </form>
+                    @else
+                        <button disabled class="w-full bg-gray-200 text-gray-500 py-3 rounded-md cursor-not-allowed font-semibold">
+                            Sold Out
+                        </button>
+                    @endif
+                </div>
             </div>
         </div>
     @endforeach
