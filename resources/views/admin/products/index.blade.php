@@ -6,10 +6,8 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <div class="flex justify-between items-center mb-6">
-    <h3 class="text-lg font-bold">Product Inventory</h3>
+        <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+    <h3 class="text-lg font-bold text-gray-800">Product Inventory</h3>
     
     <div class="flex items-center space-x-4">
         @if($lowStockCount > 0)
@@ -17,23 +15,15 @@
                 {{ $lowStockCount }} Items Low in Stock
             </span>
         @endif
-        
-                 <a href="{{ route('admin.products.create') }}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm transition">
-                  + Add New Product
-                </a>
-                </div>
 
-                <div class="flex items-center space-x-4">
-             <a href="{{ route('dashboard') }}" class="text-gray-600 hover:text-gray-900 text-sm font-medium">
-              View Storefront
-              </a>
+        <a href="{{ route('dashboard') }}" class="text-sm font-medium text-gray-600 hover:text-gray-900">
+            View Storefront
+        </a>
 
-    @if($lowStockCount > 0)
-        @endif
-    
-                <a href="{{ route('admin.products.create') }}" ...>
-             + Add New Product
-                </a>
+           <a href="{{ route('admin.products.create') }}" class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 transition ease-in-out duration-150">
+            + Add New Product
+            </a>
+            </div>
                 </div>
 
                  </div>
@@ -57,20 +47,21 @@
                                     {{ $product->quantity }}
                                 </span>
                             </td>
-                            <td class="p-3">
-                            <a href="{{ route('admin.products.edit', $product->id) }}" class="text-blue-600 hover:text-blue-900 font-medium">
-                              Edit
-                            </a>
-                            </td>
-                            <td class="p-3 flex space-x-3">
-                            <a href="{{ route('admin.products.edit', $product->id) }}" class="text-blue-600 hover:underline">Edit</a>
-    
-                            <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-600 hover:underline">Delete</button>
-                            </form>
-                            </td>
+                           <td class="p-3">
+    <div class="flex items-center space-x-4">
+        <a href="{{ route('admin.products.edit', $product->id) }}" class="text-blue-600 hover:text-blue-900 font-medium">
+            Edit
+        </a>
+
+        <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?');" class="inline">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="text-red-600 hover:text-red-900 font-medium">
+                Delete
+            </button>
+        </form>
+    </div>
+</td>
                             </tr>
                         @endforeach
                     </tbody>
