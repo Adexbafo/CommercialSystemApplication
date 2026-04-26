@@ -59,13 +59,12 @@
                                 </div>
                             </div>
 
-                            <form action="{{ route('checkout.store') }}" method="POST">
-                                @csrf
-                                <button type="submit" class="btn-primary w-full py-4 text-lg">
-                                    Proceed to Checkout
-                                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-                                </button>
-                            </form>
+                            <form action="{{ route('cart.checkout') }}" method="POST">
+                            @csrf
+                     <button type="submit" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-slate-800 transition-all">
+                         Proceed to Checkout
+                    </button>
+                        </form>
                             
                             <p class="mt-6 text-xs text-slate-400 text-center flex items-center justify-center gap-2">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>

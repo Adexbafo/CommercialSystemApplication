@@ -23,6 +23,16 @@
                     </div>
 
                     <div class="mb-4">
+                 <x-input-label for="category_id" value="Category" />
+                <select name="category_id" id="category_id" class="...">
+                <option value="">Select Category</option>
+                @foreach($categories as $category)
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+                </select>
+                    </div>
+
+                    <div class="mb-4">
                         <x-input-label for="description" value="Description" />
                         <textarea name="description" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500"></textarea>
                     </div>

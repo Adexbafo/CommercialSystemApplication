@@ -97,13 +97,24 @@
                                     </div>
 
                                     @if($product->quantity > 0)
-                                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
-                                            @csrf
-                                            <button type="submit" class="btn-primary w-full group/btn">
-                                                Add to Cart
-                                                <svg class="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                                            </button>
-                                        </form>
+                                        <div class="space-y-3">
+                            <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                            @csrf
+                               <button type="submit" class="btn-secondary w-full py-2">
+                               Add to Cart
+                                </button>
+                                 </form>
+
+                                  <form action="{{ route('checkout.store', $product->id) }}" method="POST">
+                                   @csrf
+                                   <button type="submit" class="btn-primary w-full group/btn py-3">
+                                    Buy Now & Get Receipt
+                                    <svg class="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                    </svg>
+                                    </button>
+                                    </form>
+                                    </div>
                                     @else
                                         <button disabled class="w-full bg-slate-100 text-slate-400 py-3 rounded-xl cursor-not-allowed font-bold flex items-center justify-center">
                                             Out of Stock

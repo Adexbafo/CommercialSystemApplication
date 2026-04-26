@@ -30,6 +30,7 @@
 
                 <table class="w-full text-left border-collapse">
                     <thead>
+                        <th class="p-4">Category</th>
                         <tr class="border-b bg-gray-50">
                             <th class="p-3">Name</th>
                             <th class="p-3">Price</th>
@@ -40,6 +41,9 @@
                     <tbody>
                         @foreach($products as $product)
                         <tr class="border-b hover:bg-gray-50">
+                            <td class="p-4">
+                            {{ $product->category->name ?? 'Uncategorized' }}
+                            </td>
                             <td class="p-3 font-medium">{{ $product->name }}</td>
                             <td class="p-3">${{ number_format($product->price, 2) }}</td>
                             <td class="p-3">

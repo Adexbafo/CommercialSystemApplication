@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -41,41 +42,46 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new product.
      */
-    public function create() 
-    {
-        return view('admin.products.create');
-    }
+    public function create() {
+    $categories = Category::all(); // Fetch categories
+    return view('admin.products.create', compact('categories'));
+}
 
     /**
      * Store a newly created product in the database.
      */
-    public function store(Request $request) 
-    {
-        $request->validate([
-            'name' => 'required',
-            'price' => 'required|numeric',
-            'quantity' => 'required|integer',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
+    public function store(Request $request)
+{
+    $validated = $request->validate([
+        'name' => 'required',
+        'price' => 'required|numeric',
+        'quantity' => 'required|integer',
+        'category_id' => 'nullable|exists:categories,id', // Add this
+        'image' => 'nullable|image',
+    ]);
 
-        $data = $request->all();
-
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('products', 'public');
-        }
-
-        Product::create($data);
-        return redirect()->route('admin.products')->with('success', 'Product added successfully!');
+    $product = new Product();
+    $product->name = $request->name;
+    $product->price = $request->price;
+    $product->quantity = $request->quantity;
+    $product->category_id = $request->category_id; // THIS LINE IS KEY
+    
+    if ($request->hasFile('image')) {
+        $product->image = $request->file('image')->store('products', 'public');
     }
+
+    $product->save();
+
+    return redirect()->route('admin.products')->with('success', 'Product created!');
+}
 
     /**
      * Show the form for editing an existing product.
      */
-    public function edit(Product $product) 
-    {
-        return view('admin.products.edit', compact('product'));
-    }
-
+    public function edit(Product $product) {
+    $categories = Category::all(); // Fetch categories
+    return view('admin.products.edit', compact('product', 'categories'));
+}
     /**
      * Update the specified product in the database.
      */

@@ -4,56 +4,61 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Order;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-
-
-
-Route::get('/admin/products', [ProductController::class, 'adminIndex'])
-    ->middleware(['auth', 'can:admin'])
-    ->name('admin.products');
-    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
-    Route::middleware(['auth', 'can:admin'])->prefix('admin')->group(function () {
-    Route::get('/products', [ProductController::class, 'adminIndex'])->name('admin.products');
-    Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
-    Route::post('/products', [ProductController::class, 'store'])->name('admin.products.store');
-    Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
-    Route::put('/products/{product}', [ProductController::class, 'update'])->name('admin.products.update');
-});
-
+// --- Public Routes ---
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', [ProductController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+// --- Customer Routes ---
+Route::middleware(['auth', 'verified'])->group(function () {
+    
+    // Marketplace
+    Route::get('/dashboard', [ProductController::class, 'index'])->name('dashboard');
 
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+    // Cart & Checkout
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/checkout/{product}', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::post('/cart/checkout', [CheckoutController::class, 'processCart'])->name('cart.checkout');
+    Route::get('/checkout/success/{order}', function (Order $order) {
+        return view('checkout.success', compact('order'));
+    })->name('checkout.success');
 
-Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    // Customer's Personal Order History
+    Route::get('/orders', function () {
+        $orders = Auth::user()->orders()->latest()->get(); 
+        return view('orders.history', compact('orders'));
+    })->name('orders.index');
 
-Route::get('/orders', function () {
-    $orders = Auth::user()->orders()->latest()->get(); 
-    return view('orders.history', compact('orders'));
-})->middleware(['auth'])->name('orders.index');
-
-Route::middleware('auth')->group(function () {
+    // Profile Settings
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/orders/{order}/download', function (\App\Models\Order $order) {
-    // Verify the user owns the order
-    if ($order->user_id !== Auth::id()) { abort(403); }
+// --- Admin Dedicated Routes ---
+Route::middleware(['auth', 'can:admin'])->prefix('admin')->group(function () {
+    
+    // Admin Home/Dashboard
+    Route::get('/dashboard', function() {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
 
-    $pdf = Pdf::loadView('orders.pdf', compact('order'));
-    return $pdf->download('order-receipt-'.$order->id.'.pdf');
-})->name('orders.download');
+    // Product Management
+    Route::get('/products', [ProductController::class, 'adminIndex'])->name('admin.products');
+    Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
+    Route::post('/products', [ProductController::class, 'store'])->name('admin.products.store');
+    Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
+    Route::put('/products/{product}', [ProductController::class, 'update'])->name('admin.products.update');
+    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
 
+    // Global Order Management (Fixed the /admin/admin issue here)
+    Route::get('/orders', [CheckoutController::class, 'adminOrders'])->name('admin.orders');
+});
 
 require __DIR__.'/auth.php';

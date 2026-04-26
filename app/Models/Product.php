@@ -13,7 +13,17 @@ class Product extends Model
     'name', 
     'description', 
     'price', 
-    'quantity', // Make sure this is here!
-    'image'
-   ];
+    'quantity', 
+    'image', 
+    'category_id' // Ensure this is here
+];
+
+// Also, add the relationship so a product knows its category
+public function category()
+{
+    return $this->belongsTo(Category::class);
+}
+
+
+
 }
