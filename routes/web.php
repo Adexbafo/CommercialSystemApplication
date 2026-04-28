@@ -23,6 +23,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Cart & Checkout
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+    Route::patch('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
     Route::post('/checkout/{product}', [CheckoutController::class, 'store'])->name('checkout.store');
     Route::post('/cart/checkout', [CheckoutController::class, 'processCart'])->name('cart.checkout');
     Route::get('/checkout/success/{order}', function (Order $order) {
