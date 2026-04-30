@@ -10,14 +10,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
-class AuthenticatedSessionController extends Controller
+class AdminAuthenticatedSessionController extends Controller
 {
     /**
-     * Display the login view.
+     * Display the admin login view.
      */
     public function create(): View
     {
-        return view('auth.login');
+        return view('auth.admin-login');
     }
 
     /**
@@ -27,13 +27,19 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
-        $request->session()->regenerate();
+        if (Gate::denies('admin')) {
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
 
-        if (Gate::allows('admin')) {
-            return redirect()->intended(route('admin.dashboard', absolute: false));
+            return redirect()->route('admin.login')->withErrors([
+                'email' => 'Access Denied: These credentials do not have administrative privileges.',
+            ]);
         }
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $request->session()->regenerate();
+
+        return redirect()->intended(route('admin.dashboard', absolute: false));
     }
 
     /**
@@ -47,6 +53,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('admin.login');
     }
 }

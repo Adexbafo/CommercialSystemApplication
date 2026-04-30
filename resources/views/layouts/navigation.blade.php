@@ -68,9 +68,9 @@
                         </div>
 
                         <div class="border-t border-slate-100 p-1">
-                            <form method="POST" action="{{ route('logout') }}">
+                            <form method="POST" action="{{ request()->is('admin*') ? route('admin.logout') : route('logout') }}">
                                 @csrf
-                                <x-dropdown-link :href="route('logout')"
+                                <x-dropdown-link :href="request()->is('admin*') ? route('admin.logout') : route('logout')"
                                         onclick="event.preventDefault(); this.closest('form').submit();"
                                         class="rounded-lg font-bold text-rose-600 hover:bg-rose-50">
                                     {{ __('Log Out') }}
@@ -145,7 +145,7 @@
                     {{ __('Order History') }}
                 </a>
 
-                <form method="POST" action="{{ route('logout') }}">
+                <form method="POST" action="{{ request()->is('admin*') ? route('admin.logout') : route('logout') }}">
                     @csrf
                     <button type="submit" class="w-full flex items-center px-4 py-3 rounded-xl text-base font-bold text-rose-600 hover:bg-rose-50 transition-all">
                         <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4-4H7m6 4v1h1V7h-1z" /></svg>

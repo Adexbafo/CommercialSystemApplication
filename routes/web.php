@@ -43,8 +43,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// --- Admin Authentication Routes ---
+Route::middleware('guest')->group(function () {
+    Route::get('/admin/login', [App\Http\Controllers\Auth\AdminAuthenticatedSessionController::class, 'create'])->name('admin.login');
+    Route::post('/admin/login', [App\Http\Controllers\Auth\AdminAuthenticatedSessionController::class, 'store']);
+});
+
+Route::middleware('auth')->group(function () {
+    Route::post('/admin/logout', [App\Http\Controllers\Auth\AdminAuthenticatedSessionController::class, 'destroy'])->name('admin.logout');
+});
+
 // --- Admin Dedicated Routes ---
-Route::middleware(['auth', 'can:admin'])->prefix('admin')->group(function () {
+Route::middleware(['admin_redirect', 'can:admin'])->prefix('admin')->group(function () {
     
     // Admin Home/Dashboard
     Route::get('/dashboard', function() {
@@ -59,7 +69,7 @@ Route::middleware(['auth', 'can:admin'])->prefix('admin')->group(function () {
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('admin.products.update');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
 
-    // Global Order Management (Fixed the /admin/admin issue here)
+    // Global Order Management
     Route::get('/orders', [CheckoutController::class, 'adminOrders'])->name('admin.orders');
 });
 

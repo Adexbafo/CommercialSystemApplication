@@ -44,4 +44,13 @@
             </x-primary-button>
         </div>
     </form>
+
+    <div class="mt-8 pt-6 border-t border-gray-100 text-center">
+        <p class="text-sm text-gray-500">
+            Administrative staff? 
+            <a href="{{ route('admin.login') }}" class="text-indigo-600 hover:text-indigo-500 font-bold ml-1 transition-colors">
+                Access Admin Portal &rarr;
+            </a>
+        </p>
+    </div>
 </x-guest-layout>

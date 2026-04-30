@@ -33,10 +33,13 @@
                     @auth
                         <a href="{{ url('/dashboard') }}" class="btn-primary py-2.5">Dashboard</a>
                     @else
-                        <a href="{{ route('login') }}" class="text-slate-600 font-semibold hover:text-primary-600 transition-colors">Sign In</a>
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="btn-primary py-2.5 px-6">Get Started</a>
-                        @endif
+                        <div class="flex items-center gap-6">
+                            <a href="{{ route('login') }}" class="text-slate-600 font-bold hover:text-primary-600 transition-all">Sign In</a>
+                            <a href="{{ route('admin.login') }}" class="text-slate-400 font-bold hover:text-indigo-600 transition-all text-sm uppercase tracking-wider">Admin</a>
+                            @if (Route::has('register'))
+                                <a href="{{ route('register') }}" class="btn-primary py-2.5 px-6">Get Started</a>
+                            @endif
+                        </div>
                     @endauth
                 </div>
             </nav>
@@ -166,6 +169,7 @@
                         <h4 class="text-white font-bold mb-6">Account</h4>
                         <ul class="space-y-4">
                             <li><a href="{{ route('login') }}" class="hover:text-primary-500 transition-colors">Sign In</a></li>
+                            <li><a href="{{ route('admin.login') }}" class="hover:text-primary-500 transition-colors">Admin Portal</a></li>
                             <li><a href="{{ route('register') }}" class="hover:text-primary-500 transition-colors">Register</a></li>
                             <li><a href="{{ route('profile.edit') }}" class="hover:text-primary-500 transition-colors">Settings</a></li>
                         </ul>
