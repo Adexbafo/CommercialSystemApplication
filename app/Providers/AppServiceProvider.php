@@ -9,9 +9,10 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     public function boot(): void
-    {
-        Gate::define('admin', function (User $user) {
-            return $user->id === 1; // Or use your email
-        });
-    }
+{
+    // The Enterprise way: checking for the 'admin' role string
+    Gate::define('admin', function (User $user) {
+        return $user->role === 'admin';
+    });
+}
 }

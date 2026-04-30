@@ -13,19 +13,17 @@ class ProductController extends Controller
      * Display the public dashboard with search functionality.
      */
     public function index(Request $request)
-    {
-        $query = Product::query();
+{
+    $query = $request->input('search');
 
-        if ($request->filled('search')) {
-            $search = $request->input('search');
-            $query->where('name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
-        }
+    // If there is a search term, filter the products; otherwise, show all.
+    $products = Product::when($query, function ($q) use ($query) {
+        return $q->where('name', 'like', '%' . $query . '%')
+                 ->orWhere('description', 'like', '%' . $query . '%');
+    })->get();
 
-        $products = $query->get(); 
-
-        return view('dashboard', compact('products'));
-    }
+    return view('dashboard', compact('products'));
+}
 
     /**
      * Admin view: List all products for management.

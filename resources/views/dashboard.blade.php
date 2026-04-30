@@ -15,29 +15,25 @@
                         Discover premium products from our curated selection of high-end goods.
                     </p>
                 </div>
+            </div> <!-- Fixed: Added missing closing div for Header -->
                 
-                <!-- Search Section -->
-                <div class="w-full md:w-[400px]">
-                    <form action="{{ route('dashboard') }}" method="GET" class="relative group">
-                        <input 
-                            type="text" 
-                            name="search" 
-                            placeholder="Search products..." 
-                            value="{{ request('search') }}"
-                            class="input-premium pl-14"
-                        >
-                        <div class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-500 transition-colors duration-300">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
-                        </div>
-                        @if(request('search'))
-                            <a href="{{ route('dashboard') }}" class="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-slate-400 hover:text-slate-600 bg-slate-50 rounded-lg transition-all">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                            </a>
-                        @endif
-                    </form>
-                </div>
+            <!-- Search Section -->
+            <div class="mb-12">
+                <form action="{{ route('dashboard') }}" method="GET" class="relative max-w-xl">
+                    <input type="text" 
+                           name="search" 
+                           value="{{ request('search') }}"
+                           placeholder="Search premium products..." 
+                           class="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent shadow-sm transition-all">
+                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                    @if(request('search'))
+                        <a href="{{ route('dashboard') }}" class="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400 hover:text-rose-500">Clear</a>
+                    @endif
+                </form>
             </div>
 
             <!-- Products Grid -->
